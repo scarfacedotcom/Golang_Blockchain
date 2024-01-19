@@ -26,20 +26,19 @@ func NewBlock(nonce int, previousHash [32]byte, transactions []*Transaction) *Bl
 }
 
 func (b *Block) Print() {
-	fmt.Printf("timestamp %d\n", b.timestamp)
-	fmt.Printf("nonce %d\n", b.nonce)
-	fmt.Printf("previous_hash %x\n", b.previousHash)
+	fmt.Printf("timestamp       %d\n", b.timestamp)
+	fmt.Printf("nonce           %d\n", b.nonce)
+	fmt.Printf("previous_hash   %x\n", b.previousHash)
 	for _, t := range b.transactions {
 		t.Print()
 	}
-
 }
 
 func (b *Block) Hash() [32]byte {
 	m, _ := json.Marshal(b)
-	fmt.Println(string(m))
 	return sha256.Sum256([]byte(m))
 }
+
 func (b *Block) MarshalJSON() ([]byte, error) {
 	return json.Marshal(struct {
 		Timestamp    int64          `json:"timestamp"`
@@ -79,14 +78,15 @@ func (bc *Blockchain) LastBlock() *Block {
 
 func (bc *Blockchain) Print() {
 	for i, block := range bc.chain {
-		fmt.Printf("%s Chain %d %s\n", strings.Repeat("=", 25), i, strings.Repeat("=", 25))
+		fmt.Printf("%s Chain %d %s\n", strings.Repeat("=", 25), i,
+			strings.Repeat("=", 25))
 		block.Print()
 	}
 	fmt.Printf("%s\n", strings.Repeat("*", 25))
 }
 
-func (bc *Blockchain) AddTransaction(sender string, recipeint string, value float32) {
-	t := NewTransaction(sender, recipeint, value)
+func (bc *Blockchain) AddTransaction(sender string, recipient string, value float32) {
+	t := NewTransaction(sender, recipient, value)
 	bc.transactionPool = append(bc.transactionPool, t)
 }
 
@@ -102,16 +102,16 @@ func NewTransaction(sender string, recipient string, value float32) *Transaction
 
 func (t *Transaction) Print() {
 	fmt.Printf("%s\n", strings.Repeat("-", 40))
-	fmt.Printf("sender_blockchain_address %s\n", t.senderBlockchainAddress)
-	fmt.Printf("recipient_blockchain_address %s\n", t.recipientBlockchainAddress)
-	fmt.Printf("value %.1f/n", t.value)
+	fmt.Printf(" sender_blockchain_address      %s\n", t.senderBlockchainAddress)
+	fmt.Printf(" recipient_blockchain_address   %s\n", t.recipientBlockchainAddress)
+	fmt.Printf(" value                          %.1f\n", t.value)
 }
 
 func (t *Transaction) MarshalJSON() ([]byte, error) {
 	return json.Marshal(struct {
-		Sender    string  `json:"sender_Blockchain_address"`
-		Recipient string  `json:"recipient_Blockchain_address"`
-		Value     float32 `jaon:"value"`
+		Sender    string  `json:"sender_blockchain_address"`
+		Recipient string  `json:"recipient_blockchain_address"`
+		Value     float32 `json:"value"`
 	}{
 		Sender:    t.senderBlockchainAddress,
 		Recipient: t.recipientBlockchainAddress,
@@ -120,17 +120,21 @@ func (t *Transaction) MarshalJSON() ([]byte, error) {
 }
 
 func init() {
-	log.SetPrefix("Scar Face Blockchain: ")
+	log.SetPrefix("Blockchain: ")
 }
 
 func main() {
 	blockChain := NewBlockchain()
 	blockChain.Print()
+
+	blockChain.AddTransaction("A", "B", 1.0)
 	previousHash := blockChain.LastBlock().Hash()
 	blockChain.CreateBlock(5, previousHash)
 	blockChain.Print()
 
+	blockChain.AddTransaction("C", "D", 2.0)
+	blockChain.AddTransaction("X", "Y", 3.0)
 	previousHash = blockChain.LastBlock().Hash()
-	blockChain.CreateBlock(5, previousHash)
+	blockChain.CreateBlock(2, previousHash)
 	blockChain.Print()
 }

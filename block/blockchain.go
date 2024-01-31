@@ -102,8 +102,13 @@ func (bc *Blockchain) AddTransaction(sender string, recipient string, value floa
 		bc.transactionPool = append(bc.transactionPool, t)
 		return true
 	}
-
 	if bc.VerifyTransactionSignatre(senderPublicKey, s, t) {
+		/*
+			if bc.CalculateTotalAmount(sender) < value {
+				log.Println("ERROR: Brooooo...you dont have enough funds")
+				return false
+			}
+		*/
 		bc.transactionPool = append(bc.transactionPool, t)
 		return true
 	} else {

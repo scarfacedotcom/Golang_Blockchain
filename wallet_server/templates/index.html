@@ -2,9 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Wallet</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        div {
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1 {
+            color: #3498db;
+        }
+
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        textarea, input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+    </style>
 </head>
 <body>
-Hello SCAR FACE!
+
+    <div>
+        <h1>Wallet</h1>
+        <div id="wallet_amount">0</div>
+        <button id="reload_wallet">Reload Wallet</button>
+
+        <p>Public Key</p>
+        <textarea id="public_key" rows="2" cols="100"></textarea>
+
+        <p>Private Key</p>
+        <textarea id="private_key" rows="1" cols="100"></textarea>
+
+        <p>Blockchain Address</p>
+        <textarea id="blockchain_address" rows="1" cols="100"></textarea>
+    </div>
+
+    <div>
+        <h1>Send Money</h1>
+        <div>
+            Address: <input id="recipient_blockchain_address" size="100" type="text">
+            <br>
+            Amount: <input id="send_amount" type="text">
+            <br>
+            <button id="send_money_button">Send</button>
+        </div>
+    </div>
+
 </body>
 </html>
